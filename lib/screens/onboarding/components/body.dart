@@ -1,4 +1,4 @@
-import 'package:doors_tour_app/screens/home.dart';
+import 'package:doors_tour_app/screens/home_screen/components/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
@@ -106,8 +106,10 @@ class _BodyState extends State<Body> {
                             textAlign: TextAlign.end,
                           ),
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (_) => Home()));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => BottomNavigator()));
                           },
                         ),
                       ),
@@ -135,5 +137,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
-class BA8B {}
