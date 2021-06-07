@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/screens/Funds/fundbody.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../home.dart';
@@ -15,7 +16,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
 
   final tabs = [
     Home(),
-    Home(),
+    fundbody(),
     Home(),
     Home(),
   ];
