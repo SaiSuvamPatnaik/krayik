@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/screens/news.dart';
 import 'package:doors_tour_app/screens/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: OnboardingPage(),
-      
+      home: news(),
       debugShowCheckedModeBanner: false,
     );
   }
