@@ -17,6 +17,7 @@ class _signinState extends State<signin> {
         child: Column(
           children: [
             Expanded(
+              
                 flex: 5,
                 child: Container(
                   child: Padding(
