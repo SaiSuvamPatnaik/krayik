@@ -1,14 +1,17 @@
 import 'package:doors_tour_app/screens/Authentication/signup.dart';
+import 'package:doors_tour_app/screens/login_sign_up.dart';
+import 'package:doors_tour_app/screens/otp_verification.dart';
 import 'package:flutter/material.dart';
-class signin extends StatefulWidget {
+class signup extends StatefulWidget {
   @override
-  _signinState createState() => _signinState();
+  _signupState createState() => _signupState();
 }
 
-class _signinState extends State<signin> {
+class _signupState extends State<signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.white,
         child: Column(
@@ -21,7 +24,12 @@ class _signinState extends State<signin> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.arrow_back,size: 30,color: Color(0xFF296B55),),
+                        GestureDetector(
+                            onTap: (){
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) => LoginSignUp()));
+                            },
+                            child: Icon(Icons.arrow_back,size: 30,color: Color(0xFF296B55),)),
                         SizedBox(height: 35,),
                         Text("Let's get started",style: TextStyle(fontSize: 26,color: Color(0xFF296B55),fontWeight: FontWeight.bold),),
                         SizedBox(height: 25,),
@@ -104,7 +112,7 @@ class _signinState extends State<signin> {
                               onTap: (){
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => signup()));
+                                    MaterialPageRoute(builder: (context) => OtpVerification()));
                               },
                               child: Text("SEND OTP",style: TextStyle(fontSize: 16,color: Color(0xFF296B55),fontWeight: FontWeight.w500),)),
                         )

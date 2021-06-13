@@ -1,14 +1,17 @@
 import 'package:doors_tour_app/screens/Authentication/Signin.dart';
+import 'package:doors_tour_app/screens/login_sign_up.dart';
+import 'package:doors_tour_app/screens/otp_verification.dart';
 import 'package:flutter/material.dart';
-class signup extends StatefulWidget {
+class signin extends StatefulWidget {
   @override
-  _signupState createState() => _signupState();
+  _signinState createState() => _signinState();
 }
 
-class _signupState extends State<signup> {
+class _signinState extends State<signin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.white,
         child: Column(
@@ -21,7 +24,12 @@ class _signupState extends State<signup> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.arrow_back,size: 30,color: Color(0xFF296B55),),
+                        GestureDetector(
+                            onTap: (){
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) => LoginSignUp()));
+                            },
+                            child: Icon(Icons.arrow_back,size: 30,color: Color(0xFF296B55),)),
                         SizedBox(height: 35,),
                         Text("Welcome Again",style: TextStyle(fontSize: 26,color: Color(0xFF296B55),fontWeight: FontWeight.bold),),
                         SizedBox(height: 25,),
@@ -80,7 +88,7 @@ class _signupState extends State<signup> {
                               onTap: (){
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => signin()));
+                                    MaterialPageRoute(builder: (context) => OtpVerification()));
                               },
                               child: Text("SEND OTP",style: TextStyle(fontSize: 16,color: Color(0xFF296B55),fontWeight: FontWeight.w500),)),
                         )

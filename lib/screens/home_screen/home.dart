@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/screens/accounts.dart';
 import 'package:doors_tour_app/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int topListViewIndex = 0;
   String name = "Hardik";
+  var emailId = "danielleroberts@example.com";
   var imageUrl =
       "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/man-vector-design-template-1ba90da9b45ecf00ceb3b8ae442ad32c_screen.jpg?ts=1601484738";
 
@@ -345,15 +347,26 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Container(
-                        height: 40.0,
-                        width: 40.0,
-                        color: Color(0xffFF0E58),
-                        child: Image.network(imageUrl),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              Accounts(imageUrl: imageUrl, emailId: emailId),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Container(
+                          height: 40.0,
+                          width: 40.0,
+                          color: Color(0xffFF0E58),
+                          child: Image.network(imageUrl),
+                        ),
                       ),
                     ),
                   ),

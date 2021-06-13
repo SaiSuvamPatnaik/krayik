@@ -1,4 +1,6 @@
 import 'package:doors_tour_app/screens/home_screen/components/bottom_navigator.dart';
+import 'package:doors_tour_app/screens/login_sign_up.dart';
+import 'package:doors_tour_app/screens/otp_verification.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
@@ -109,7 +111,7 @@ class _BodyState extends State<Body> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => BottomNavigator()));
+                                    builder: (_) => LoginSignUp()));
                           },
                         ),
                       ),
