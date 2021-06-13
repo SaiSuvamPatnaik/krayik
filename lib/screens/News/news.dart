@@ -99,7 +99,6 @@ class _newsState extends State<news> {
                                       Expanded(
                                           flex:3,
                                           child: Container(
-
                                             width: width-110,
                                             child: Align(
                                                 alignment: Alignment.topLeft,
