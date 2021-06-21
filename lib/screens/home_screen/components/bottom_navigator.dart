@@ -1,4 +1,6 @@
 import 'package:doors_tour_app/screens/Funds/fundbody.dart';
+import 'package:doors_tour_app/screens/Prices/prices.dart';
+import 'package:doors_tour_app/screens/news/newsscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../home.dart';
@@ -11,14 +13,13 @@ class BottomNavigator extends StatefulWidget {
 }
 
 class _BottomNavigatorState extends State<BottomNavigator> {
-  String name = "Hardik";
   int _currentIndex = 0;
 
   final tabs = [
     Home(),
     fundbody(),
-    Home(),
-    Home(),
+    prices(),
+    news(),
   ];
 
   @override

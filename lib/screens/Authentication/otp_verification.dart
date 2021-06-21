@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home_screen/components/bottom_navigator.dart';
+import '../home_screen/components/bottom_navigator.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:doors_tour_app/screens/accounts.dart';
-import 'package:doors_tour_app/size_config.dart';
+import 'package:doors_tour_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {

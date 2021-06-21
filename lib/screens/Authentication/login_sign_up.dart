@@ -1,7 +1,5 @@
-import 'package:doors_tour_app/screens/Authentication/Signin.dart';
-import 'package:doors_tour_app/screens/Authentication/signup.dart';
 import 'package:doors_tour_app/screens/home_screen/components/bottom_navigator.dart';
-import 'package:doors_tour_app/screens/otp_verification.dart';
+import 'package:doors_tour_app/utils/router/RoutingUtils.dart';
 import 'package:flutter/material.dart';
 
 class LoginSignUp extends StatefulWidget {
@@ -15,6 +13,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -81,8 +80,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => signup()));
+                      Navigator.pushNamed(context, Routes.signUp);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,
@@ -117,10 +115,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => signin()));
+                          Navigator.pushNamed(context, Routes.signIn);
                         },
                         child: Text(
                           "Login",

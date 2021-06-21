@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/screens/referandearn.dart';
 import 'package:flutter/material.dart';
 
 class Accounts extends StatefulWidget {
@@ -186,37 +187,44 @@ class _AccountsState extends State<Accounts> {
   }
 
   Widget options(Container icon, String text) {
-    return Container(
-      margin: EdgeInsets.all(6.0),
-      height: 60.0,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(203, 230, 230, 0.3),
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      padding: EdgeInsets.all(10.0),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: icon,
-          ),
-          Expanded(
-            flex: 8,
-            child: Text(
-              text,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: (){
+        text=="Refer and Earn"?Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => referandearn())):print(text);
+      },
+      child: Container(
+        margin: EdgeInsets.all(6.0),
+        height: 60.0,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(203, 230, 230, 0.3),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        padding: EdgeInsets.all(10.0),
+        alignment: Alignment.centerLeft,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: icon,
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              ">",
-              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+            Expanded(
+              flex: 8,
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: Text(
+                ">",
+                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
