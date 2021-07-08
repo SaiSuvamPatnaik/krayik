@@ -14,6 +14,13 @@
 class Routes {
   //home
   static const String home = 'homePage';
+  static const String funds = 'fundsPage';
+  static const String prices = 'pricesPage';
+  static const String news = 'newsPage';
+
+  //account
+  static const String accounts = 'accounts';
+  static const String referAndEarn = 'referAndEarn';
 
   //auth
   static const String forgotPwd = 'forgetPassword';
@@ -21,6 +28,8 @@ class Routes {
   static const String signIn = 'signIn';
   static const String signUp = 'SignUp';
   static const String otpVerification = 'otpVerification';
+
+  static const List<String> bottomNavBarRoutes = [home, funds, prices, news];
 
   static const List<String> unprotectedRouts = [signIn, signUp, forgotPwd];
 }

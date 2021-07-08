@@ -1,11 +1,14 @@
+import 'package:doors_tour_app/constants/constants.dart';
+import 'package:doors_tour_app/screens/Prices/price_details.dart';
+import 'package:doors_tour_app/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 
-class prices extends StatefulWidget {
+class Prices extends StatefulWidget {
   @override
-  _pricesState createState() => _pricesState();
+  _PricesState createState() => _PricesState();
 }
 
-class _pricesState extends State<prices> {
+class _PricesState extends State<Prices> {
   @override
   Widget build(BuildContext context) {
     int width = (MediaQuery.of(context).size.width).toInt();
@@ -19,7 +22,7 @@ class _pricesState extends State<prices> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Color(0xFF1EC78F),
+        backgroundColor: Constants.kPrimaryColor,
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
           child: IconButton(
@@ -31,14 +34,15 @@ class _pricesState extends State<prices> {
         title: Padding(
           padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
           child: Center(
-              child: Text(
-            "PRICES",
-            style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                letterSpacing: 1,
-                fontWeight: FontWeight.bold),
-          )),
+            child: Text(
+              "PRICES",
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
         ),
         actions: [
           Container(
@@ -47,10 +51,11 @@ class _pricesState extends State<prices> {
             width: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0)),
+                topRight: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+                topLeft: Radius.circular(10.0),
+                bottomLeft: Radius.circular(10.0),
+              ),
             ),
             child: Image.asset("assets/images/person.png"),
           )
@@ -58,7 +63,7 @@ class _pricesState extends State<prices> {
         bottom: PreferredSize(
           preferredSize: Size(0.0, width / 4),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 7, 20, 20),
+            padding: const EdgeInsets.fromLTRB(10, 7, 10, 20),
             child: TextField(
               style: TextStyle(fontSize: 17, color: Colors.black),
               decoration: InputDecoration(
@@ -72,7 +77,7 @@ class _pricesState extends State<prices> {
                 prefixIcon: Icon(
                   Icons.search,
                   size: 25,
-                  color: Color(0xFF1EC78F),
+                  color: Constants.kPrimaryColor,
                 ),
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -81,72 +86,96 @@ class _pricesState extends State<prices> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Center(
-              child: Text(
-            "ALL REITS and INVITs",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1EC78F),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
             ),
-          )),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: height - 270,
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: index == 0 ? 50 : 75,
-                  child: Card(
-                    elevation: index == 0 ? 0 : 2,
-                    color: index == 0 ? Colors.white : Color(0xFFEFF4F4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        index == 0
-                            ? Expanded(
-                                flex: 2,
-                                child: Center(
-                                    child: Text("NAME",
+            Center(
+              child: Text(
+                "     ALL REITS and INVITs     ",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.transparent,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Constants.kPrimaryColor,
+                  shadows: [
+                    Shadow(
+                        color: Constants.kPrimaryColor, offset: Offset(0, -8))
+                  ],
+                  decorationThickness: 2.5,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.0),
+              height: height - 290,
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => PriceDetails()));
+                    },
+                    child: Container(
+                      margin: index == 0
+                          ? EdgeInsets.all(0)
+                          : EdgeInsets.only(bottom: 10.0),
+                      height: index == 0 ? 50 : 65,
+                      child: Card(
+                        elevation: index == 0 ? 0 : 2,
+                        color: index == 0
+                            ? Colors.white
+                            : Color.fromRGBO(222, 222, 222, 0.7),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            index == 0
+                                ? Expanded(
+                                    flex: 2,
+                                    child: Center(
+                                      child: Text(
+                                        "COMPANY NAME",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold))),
-                              )
-                            : Expanded(
-                                flex: 2,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      child: Image.asset(
-                                          "assets/images/person.png"),
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                    SizedBox(
-                                      width: 10,
+                                  )
+                                : Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 20,
+                                          child: Image.asset(
+                                              "assets/images/person.png"),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("Mindspace")
+                                      ],
                                     ),
-                                    Text("Mindspace")
-                                  ],
-                                ),
-                              ),
-                        Expanded(
-                            flex: 1,
-                            child: Center(
+                                  ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
                                 child: index == 0
                                     ? Text(
-                                        "REIT/INVIT",
+                                        "LABEL",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       )
@@ -154,10 +183,12 @@ class _pricesState extends State<prices> {
                                         "REIT",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
-                                      ))),
-                        Expanded(
-                            flex: 1,
-                            child: Center(
+                                      ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
                                 child: index == 0
                                     ? Text(
                                         "PRICE",
@@ -168,10 +199,12 @@ class _pricesState extends State<prices> {
                                         "2700",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600),
-                                      ))),
-                        Expanded(
-                            flex: 1,
-                            child: Center(
+                                      ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
                                 child: index == 0
                                     ? Text(
                                         "CHANGE",
@@ -181,18 +214,23 @@ class _pricesState extends State<prices> {
                                     : Text(
                                         "+0.56%",
                                         style: TextStyle(
-                                            color: Color(0xFF1EC78F),
+                                            color: Constants.kPrimaryColor,
                                             fontWeight: FontWeight.w600),
-                                      ))),
-                      ],
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
+      bottomNavigationBar: BottomNavigator(index: 2),
     );
   }
 }

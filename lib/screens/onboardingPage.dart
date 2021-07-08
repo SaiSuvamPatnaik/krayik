@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/constants/constants.dart';
 import 'package:doors_tour_app/utils/router/RoutingUtils.dart';
 import 'package:doors_tour_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         topRight: Radius.circular(50.0),
                         topLeft: Radius.circular(50.0),
                       ),
-                      color: Color.fromARGB(255, 65, 186, 139),
+                      color: Constants.kPrimaryColor,
                     ),
                     padding: EdgeInsets.all(0),
                     alignment: Alignment.center,
@@ -72,10 +73,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         Expanded(
                           flex: 2,
                           child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                      3, (index) => buildDot(index)))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                3,
+                                (index) => buildDot(index),
+                              ),
+                            ),
+                          ),
                         ),
                         Expanded(
                           flex: 1,

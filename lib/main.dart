@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:doors_tour_app/screens/home_screen/components/bottom_navigator.dart';
-import 'package:doors_tour_app/screens/home_screen/home.dart';
+import 'package:doors_tour_app/screens/home/home.dart';
 import 'package:doors_tour_app/screens/onboardingPage.dart';
+import 'package:doors_tour_app/services/GoogleSignInApi.dart';
 import 'package:doors_tour_app/services/auth.dart';
 import 'package:doors_tour_app/utils/router/router.dart' as router;
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -18,11 +19,14 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(ChangeNotifierProvider(
+  runApp(
+    ChangeNotifierProvider(
       create: (context) => AuthService(),
       builder: (context, snapshot) {
         return MyApp();
-      }));
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
           case LoginStatus.idle:
             return OnboardingPage();
           case LoginStatus.loggedIn:
-            return BottomNavigator();
+            return Home();
           case LoginStatus.loading:
             return Scaffold(
               body: Center(

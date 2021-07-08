@@ -1,7 +1,12 @@
 import 'package:doors_tour_app/screens/Authentication/login_sign_up.dart';
 import 'package:doors_tour_app/screens/Authentication/signin.dart';
 import 'package:doors_tour_app/screens/Authentication/signup.dart';
-import 'package:doors_tour_app/screens/home_screen/home.dart';
+import 'package:doors_tour_app/screens/Funds/fundbody.dart';
+import 'package:doors_tour_app/screens/Prices/prices.dart';
+import 'package:doors_tour_app/screens/accounts.dart';
+import 'package:doors_tour_app/screens/home/home.dart';
+import 'package:doors_tour_app/screens/news/newsscreen.dart';
+import 'package:doors_tour_app/screens/referandearn.dart';
 import 'package:doors_tour_app/utils/router/RoutingUtils.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +27,6 @@ import 'package:flutter/material.dart';
  */
 class Router {
   Router._();
-
   static Widget wrong =
       Scaffold(body: Center(child: Text('Something went wrong')));
 
@@ -40,9 +44,21 @@ class Router {
         case Routes.signUp:
           return routify(SignUpPage());
 
-        //home
+        //account
+        case Routes.accounts:
+          return routify(Accounts());
+        case Routes.referAndEarn:
+          return routify(ReferAndEarn());
+
+        //home [home, funds, prices, news]
         case Routes.home:
           return routify(Home());
+        case Routes.funds:
+          return routify(Funds());
+        case Routes.prices:
+          return routify(Prices());
+        case Routes.news:
+          return routify(News());
 
         // Paste new routes above this
         default:

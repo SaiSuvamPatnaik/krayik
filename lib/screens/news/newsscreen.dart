@@ -1,253 +1,320 @@
+import 'package:doors_tour_app/constants/constants.dart';
+import 'package:doors_tour_app/models/news.dart';
+import 'package:doors_tour_app/services/newsService.dart';
+import 'package:doors_tour_app/widgets/appStreamBuilder.dart';
+import 'package:doors_tour_app/widgets/bottom_navigator.dart';
+import 'package:doors_tour_app/widgets/newsCard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
-class news extends StatefulWidget {
+class News extends StatefulWidget {
   @override
-  _newsState createState() => _newsState();
+  _NewsState createState() => _NewsState();
 }
 
-class _newsState extends State<news> {
+class _NewsState extends State<News> {
+  int currentTab = 0, topListViewIndex = 0;
+  ScrollController _scrollController = ScrollController();
+  List<Map<dynamic, dynamic>> homePageTopListView = [
+    {"text": "Invest Right,\nEarn Right.", "image": "assets/images/pig.png"},
+    {"text": "Invest Right,\nEarn Right.", "image": "assets/images/pig.png"},
+    {"text": "Invest Right,\nEarn Right.", "image": "assets/images/pig.png"},
+    {"text": "Invest Right,\nEarn Right.", "image": "assets/images/pig.png"},
+  ];
+
+  Stream<List<NewsModel>> _getStream() {
+    switch (currentTab) {
+      case 0:
+        return NewsServices().allNews().asStream();
+      case 1:
+        return NewsServices().globalNews().asStream();
+      case 2:
+        return NewsServices().reitNews().asStream();
+      case 3:
+        return NewsServices().invitNews().asStream();
+      case 4:
+        return NewsServices().financeNews().asStream();
+      default:
+        return Stream.empty();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    int width = (MediaQuery.of(context).size.width).toInt();
-    int height = (MediaQuery.of(context).size.height).toInt();
-    return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Color(0xFF1EC78F),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.white,
-            iconSize: 30,
-            onPressed: () {}),
-        title: Center(
-            child: Text(
-          "NEWS",
-          style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              letterSpacing: 1,
-              fontWeight: FontWeight.bold),
-        )),
-        actions: [
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-            height: 40,
-            width: 40,
+    return ChangeNotifierProvider<countmodel>(
+      create: (context) => countmodel(),
+      child: Builder(builder: (context) {
+        Widget buildDot(int index) {
+          return Consumer<countmodel>(builder: (context, data, child) {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                index == data.countervalvalue()
+                    ? Container()
+                    : Container(
+                        margin: EdgeInsets.all(3),
+                        height: 8,
+                        width: 8,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                Container(
+                  margin: index == data.countervalvalue()
+                      ? EdgeInsets.all(2)
+                      : EdgeInsets.all(4),
+                  height: index == data.countervalvalue() ? 10 : 6,
+                  width: index == data.countervalvalue() ? 10 : 6,
+                  decoration: BoxDecoration(
+                    color: data.countervalvalue() == index
+                        ? Constants.kPrimaryColor
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ],
+            );
+          });
+        }
+
+        Container topListView(int index) {
+          return Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0)),
-            ),
-            child: Image.asset("assets/images/person.png"),
-          )
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size(0.0, width / 2.3),
-          child: Image(
-            image: AssetImage('assets/images/Rectangle1.png'),
-            alignment: Alignment.center,
-            height: 170,
-            width: width - 10,
-            fit: BoxFit.fill,
-          ),
-        ),
-      ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 10,
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10,0,10,0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            child: Stack(
+              children: [
+                Row(
                   children: [
-                    rowbars("ALL"),
-                    rowbars("REITS"),
-                    rowbars("INVITS"),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 30),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          homePageTopListView[topListViewIndex]["text"],
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Constants.kPrimaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: height - (width / 1.14),
-                child: ListView.builder(
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            height: 80,
-                            child: Center(
-                              child: Row(
+                Container(
+                  child: Image.asset(homePageTopListView[index]["image"]),
+                  alignment: Alignment.topRight,
+                  padding: EdgeInsets.only(right: 20),
+                )
+              ],
+            ),
+          );
+        }
+
+        return Scaffold(
+          body: SafeArea(
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: <Widget>[
+                Consumer<countmodel>(builder: (context, data1, child) {
+                  return SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    floating: false,
+                    pinned: true,
+                    snap: false,
+                    flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: true,
+                      background: Container(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.arrow_back),
+                                    color: Colors.white,
+                                    iconSize: 30,
+                                    onPressed: () {}),
+                                Text(
+                                  "NEWS",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child:
+                                      Image.asset("assets/images/person.png"),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              height: 0.25 * MediaQuery.of(context).size.height,
+                              child: Stack(
                                 children: [
+                                  PageView.builder(
+                                    itemCount: homePageTopListView.length,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 3,
+                                          bottom: 5),
+                                      child: topListView(index),
+                                    ),
+                                    onPageChanged: (value) =>
+                                        {data1.increament(value)},
+                                  ),
                                   Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10.0),
-                                          bottomRight: Radius.circular(10.0),
-                                          topLeft: Radius.circular(10.0),
-                                          bottomLeft: Radius.circular(10.0)),
-                                    ),
-                                    child: Image.asset(
-                                      Imagesinbox(index),
-                                      fit: BoxFit.fill,
-                                    ),
+                                    padding: EdgeInsets.all(8.0),
+                                    alignment: Alignment.bottomCenter,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [0, 1, 2, 3]
+                                            .map((e) => buildDot(e))
+                                            .toList()),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Expanded(
-                                          flex: 4,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 5, 0, 0),
-                                            child: Container(
-                                              width: width - 110,
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: Text(
-                                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-                                                    style:
-                                                        TextStyle(fontSize: 17),
-                                                  )),
-                                            ),
-                                          )),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Container(
-                                            width: width - 110,
-                                            child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.history,
-                                                            color: Colors.green,
-                                                            size: 13,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 4,
-                                                          ),
-                                                          Text(
-                                                            "Updated ${index} days ago",
-                                                            style: TextStyle(
-                                                                fontSize: 12),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0, 0, 20, 0),
-                                                      child: Container(
-                                                        height: 20,
-                                                        width: 70,
-                                                        decoration: BoxDecoration(
-                                                            color: Color(
-                                                                0xFF1EC78F),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        child: Center(
-                                                            child: Text(
-                                                          "Read Now",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12),
-                                                        )),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                          )),
-                                    ],
-                                  )
                                 ],
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                            child: Divider(
-                              thickness: 1,
+                          ],
+                        ),
+                      ),
+                    ),
+                    expandedHeight: 0.35 * MediaQuery.of(context).size.height,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(20),
+                      ),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Constants.kPrimaryColor,
+                  );
+                }),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: CategoryTabs(
+                    initalTab: currentTab,
+                    onTabChanged: (tab) {
+                      setState(() {
+                        currentTab = tab;
+                      });
+                    },
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: StrmBldr<List<NewsModel>>(
+                      stream: _getStream(),
+                      builder: (context, snapshot) {
+                        return Container(
+                          child: Column(
+                            children: List.generate(
+                              snapshot?.length ?? 0,
+                              (index) => NewsCard(news: snapshot![index]),
                             ),
                           ),
-                        ],
-                      );
-                    }),
-              )
-            ],
+                        );
+                      }),
+                ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: BottomNavigator(index: 3),
+        );
+      }),
+    );
+  }
+}
+
+class CategoryTabs implements SliverPersistentHeaderDelegate {
+  int initalTab;
+  Function(int tab) onTabChanged;
+  CategoryTabs({required this.initalTab, required this.onTabChanged});
+
+  late int currentTab = initalTab;
+
+  Widget rowbars(int index, String text) {
+    return InkWell(
+      onTap: () {
+        currentTab = index;
+        onTabChanged(index);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          color: index == currentTab
+              ? Constants.kPrimaryColor
+              : Color(0xff3F4442).withOpacity(0.73),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Text(
+            "$text",
+            style: TextStyle(color: Colors.white, fontSize: 15),
           ),
         ),
       ),
     );
   }
 
-  String Imagesinbox(int index) {
-    if (index % 4 == 0) {
-      return "assets/images/Rectangle2.png";
-    }
-    if (index % 4 == 1) {
-      return "assets/images/Rectangle3.png";
-    }
-    if (index % 4 == 2) {
-      return "assets/images/Rectangle4.png";
-    } else
-      return "assets/images/Rectangle5.png";
-  }
-
-  Widget rowbars(String contntext) {
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      width: 85,
-      decoration: BoxDecoration(
-          color: Color(
-              0xFF1EC78F),
-          borderRadius:
-          BorderRadius
-              .circular(
-              15)),
-      child: Center(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15,5,15,5),
-            child: Text(
-              "${contntext}",
-              style: TextStyle(
-                  color:
-                  Colors.white,
-                  fontSize: 15),
-            ),
-          )),
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: {
+            0: "All",
+            1: "Global",
+            2: "REITs",
+            3: "INVITs",
+            4: "Finance",
+          }.entries.map<Widget>((e) => rowbars(e.key, e.value)).toList()),
     );
   }
+
+  @override
+  double get maxExtent => 50;
+
+  @override
+  double get minExtent => 50;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
+
+  @override
+  PersistentHeaderShowOnScreenConfiguration? get showOnScreenConfiguration =>
+      null;
+
+  @override
+  FloatingHeaderSnapConfiguration? get snapConfiguration => null;
+
+  @override
+  OverScrollHeaderStretchConfiguration? get stretchConfiguration => null;
+
+  @override
+  TickerProvider? get vsync => null;
 }

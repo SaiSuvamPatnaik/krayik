@@ -1,6 +1,11 @@
-import 'package:doors_tour_app/screens/accounts.dart';
-import 'package:doors_tour_app/utils/size_config.dart';
+import 'package:doors_tour_app/constants/constants.dart';
+import 'package:doors_tour_app/services/GoogleSignInApi.dart';
+import 'package:doors_tour_app/services/auth.dart';
+import 'package:doors_tour_app/utils/router/RoutingUtils.dart';
+import 'package:doors_tour_app/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,9 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  GoogleSignInAccount? user;
   int topListViewIndex = 0;
-  String name = "Hardik";
-  var emailId = "danielleroberts@example.com";
   var imageUrl =
       "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/man-vector-design-template-1ba90da9b45ecf00ceb3b8ae442ad32c_screen.jpg?ts=1601484738";
 
@@ -138,6 +142,12 @@ class _HomeState extends State<Home> {
     "Culpa sed perspiciatis illo add earum fugiat",
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    user = GoogleSignInApi.currentuser();
+  }
   // VideoPlayerController controller = VideoPlayerController.asset("");
 
   // @override
@@ -160,28 +170,43 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            topHorizontalListView(),
-            SizedBox(
-              height: 30.0,
-            ),
-            contents(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              topHorizontalListView(),
+              contents(
                 heading: "MF's And Small Cases",
-                subHeading: "MF's And Small Cases"),
-            contents(heading: "Top Movers", subHeading: "in REITs, INVITs etc"),
-            contents(
+                subHeading: "MF's And Small Cases",
+              ),
+              contents(
+                heading: "Top Movers",
+                subHeading: "in REITs, INVITs etc",
+              ),
+              contents(
                 heading: "Learn with Krayik",
-                subHeading: "Making REITs and INVITs Investment easy"),
-            contents(
+                subHeading: "Making REITs and INVITs Investment easy",
+              ),
+              contents(
                 heading: "Karyik Fact Zone",
-                subHeading: "some quick tips for your investments"),
-            bottomAds(),
-          ],
+                subHeading: "some quick tips for your investments",
+              ),
+              bottomAds(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 25.0),
+                  child: Image.asset(
+                    "assets/icons/krayikLogo.png",
+                    color: Colors.grey,
+                    height: 15.0,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
+      bottomNavigationBar: BottomNavigator(index: 0),
     );
   }
 
@@ -207,7 +232,7 @@ class _HomeState extends State<Home> {
           width: index == topListViewIndex ? 10 : 6,
           decoration: BoxDecoration(
             color: topListViewIndex == index
-                ? Color.fromARGB(255, 65, 186, 139)
+                ? Constants.kPrimaryColor
                 : Colors.white,
             borderRadius: BorderRadius.circular(5),
           ),
@@ -236,7 +261,7 @@ class _HomeState extends State<Home> {
                   homePageTopListView[topListViewIndex]["text"],
                   style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromARGB(255, 65, 186, 139),
+                      color: Constants.kPrimaryColor,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -247,40 +272,46 @@ class _HomeState extends State<Home> {
           child: Image.asset(homePageTopListView[index]["image"]),
           alignment: Alignment.topRight,
           padding: EdgeInsets.only(right: 20),
-        )
+        ),
       ]),
     );
   }
 
   Widget contents({required String heading, required String subHeading}) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(vertical: 13.0),
       alignment: Alignment.topLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            heading,
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          ),
-          Text(
-            subHeading,
-            style: TextStyle(
-              fontSize: 13.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
+          Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text(
+              heading,
+              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text(
+              subHeading,
+              style: TextStyle(
+                fontSize: 13.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+              textAlign: TextAlign.left,
+            ),
           ),
           Container(
             height: heading == "MF's And Small Cases"
-                ? 210
+                ? 184
                 : (heading == "Karyik Fact Zone"
                     ? 130
                     : heading == "Learn with Krayik"
                         ? 250
-                        : 170),
+                        : 160),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -304,11 +335,11 @@ class _HomeState extends State<Home> {
 
   Widget topHorizontalListView() {
     return Container(
-      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
+      padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
       height: MediaQuery.of(context).size.height * 0.42,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 65, 186, 139),
+        color: Constants.kPrimaryColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.0),
           bottomRight: Radius.circular(20.0),
@@ -326,7 +357,7 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hi, $name",
+                        "Hi, ${user!.displayName}",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 20.0,
@@ -347,15 +378,9 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              Accounts(imageUrl: imageUrl, emailId: emailId),
-                        ),
-                      );
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.accounts);
                     },
                     child: Container(
                       alignment: Alignment.topRight,
@@ -365,7 +390,8 @@ class _HomeState extends State<Home> {
                           height: 40.0,
                           width: 40.0,
                           color: Color(0xffFF0E58),
-                          child: Image.network(imageUrl),
+                          child: user!.photoUrl==null ? Image.network(imageUrl)
+                              : Image.network(user!.photoUrl.toString()),
                         ),
                       ),
                     ),
@@ -414,15 +440,11 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.all(8.0),
                           alignment: Alignment.bottomCenter,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              buildDot(0),
-                              buildDot(1),
-                              buildDot(2),
-                              buildDot(3),
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [0, 1, 2, 3]
+                                  .map((e) => buildDot(e))
+                                  .toList()),
                         ),
                       ],
                     ),
@@ -442,10 +464,27 @@ class _HomeState extends State<Home> {
       padding: EdgeInsets.all(12.0),
       width: MediaQuery.of(context).size.width * 0.5,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(206, 228, 228, 100),
+        color: Color.fromRGBO(222, 222, 222, 0.7),
         borderRadius: BorderRadius.all(
           Radius.circular(15.0),
         ),
+        boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(200, 222, 222, 0.3),
+                      offset: const Offset(
+                        3.0,
+                        3.0,
+                      ),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
+                    ), //BoxShadow
+                    BoxShadow(
+                      color: Color.fromRGBO(200, 222, 222, 0.3),
+                      offset: const Offset(3.0, 3.0),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
+                    ), //BoxShadow
+                  ],
       ),
       child: Center(
         child: Column(
@@ -459,7 +498,7 @@ class _HomeState extends State<Home> {
                   child: Container(
                     alignment: Alignment.topLeft,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(8.0),
                       child: Container(
                         height: 30.0,
                         width: 30.0,
@@ -479,7 +518,7 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(5),
                       ),
-                      color: Colors.white,
+                      color: Constants.kPrimaryColor,
                     ),
                     child: Container(
                       alignment: Alignment.center,
@@ -488,6 +527,7 @@ class _HomeState extends State<Home> {
                         style: TextStyle(
                           fontSize: 9.0,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -533,7 +573,7 @@ class _HomeState extends State<Home> {
                       color: mfsAndSmallCasesList[index]["condition"] ==
                               "High Risk"
                           ? Colors.red
-                          : Colors.green,
+                          : Constants.kPrimaryColor,
                     ),
                     child: Container(
                       alignment: Alignment.center,
@@ -561,12 +601,29 @@ class _HomeState extends State<Home> {
     return Container(
       margin: EdgeInsets.all(10.0),
       padding: EdgeInsets.all(12.0),
-      width: MediaQuery.of(context).size.width * 0.38,
+      width: MediaQuery.of(context).size.width * 0.35,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(206, 228, 228, 100),
+        color: Color.fromRGBO(222, 222, 222, 0.7),
         borderRadius: BorderRadius.all(
           Radius.circular(15.0),
         ),
+        boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(200, 222, 222, 0.3),
+                      offset: const Offset(
+                        3.0,
+                        3.0,
+                      ),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
+                    ), //BoxShadow
+                    BoxShadow(
+                      color: Color.fromRGBO(200, 222, 222, 0.3),
+                      offset: const Offset(3.0, 3.0),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
+                    ), //BoxShadow
+                  ],
       ),
       child: Center(
         child: Column(
@@ -610,7 +667,7 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                   fontSize: 13,
                   color: (topMoversList[index]["increament"])
-                      ? Colors.green
+                      ? Constants.kPrimaryColor
                       : Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
@@ -628,7 +685,7 @@ class _HomeState extends State<Home> {
       padding: EdgeInsets.all(12.0),
       width: MediaQuery.of(context).size.width * 0.65,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 65, 186, 139),
+        color: Constants.kPrimaryColor,
         borderRadius: BorderRadius.all(
           Radius.circular(15.0),
         ),
@@ -684,11 +741,19 @@ class _HomeState extends State<Home> {
     //       );
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-      width: MediaQuery.of(context).size.width * 0.9,
-      decoration: BoxDecoration(
+      margin: EdgeInsets.only(top: 10.0),
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+          child: Container(
+        width: MediaQuery.of(context).size.width*0.9,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
           color: Colors.red,
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+      ),
     );
   }
 

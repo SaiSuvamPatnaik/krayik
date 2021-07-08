@@ -1,3 +1,4 @@
+import 'package:doors_tour_app/models/me.dart';
 import 'package:doors_tour_app/services/server.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -15,6 +16,7 @@ class AuthService with ChangeNotifier {
   String get error => _error;
 
   LoginStatus get status => _status;
+  late Me me= Me(id: "1", email: "ssp@gmail.com", dob: DateTime.now(), name: "SAI", profileImage: "SSP");
 
   AuthService() {
     initialise();
@@ -64,9 +66,10 @@ class AuthService with ChangeNotifier {
 
     if (response.statusCode == 200) {
       print('logged in');
+      print(response.data);
       Map map = response.data! as Map;
-      String newJwtToken = "${map['jwt']}";
-      // me = Me.fromMap(map['user'] as Map);
+      String newJwtToken = "${map['token']}";
+      me = Me.fromMap(map['data']['user'] as Map);
       // if (me.isEmailVerified == false) {
       //   throw "Sorry, could not log you in, kindly verify your email first.";
       // }
@@ -110,7 +113,7 @@ class AuthService with ChangeNotifier {
           'Content-Type': 'application/json; charset=UTF-8',
         }),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print('signedup');
         _status = LoginStatus.idle;
         notifyListeners();
@@ -126,7 +129,7 @@ class AuthService with ChangeNotifier {
       _status = LoginStatus.idle;
       notifyListeners();
       print(error.response?.data.toString());
-
+      throw e.toString();
       if (error.response?.data?["data"][0]["messages"][0]["id"] ==
           "Auth.form.error.email.taken") {
         throw "Sorry, could not sign you up, this email is already taken.";
@@ -181,7 +184,25 @@ class AuthService with ChangeNotifier {
     const _storage = FlutterSecureStorage();
     _token = (await _storage.read(key: "token")) ?? "";
     if (_token != '') {
-      // fetchInfo();
+      fetchInfo();
+      _status = LoginStatus.loggedIn;
+      notifyListeners();
+    } else {
+      _status = LoginStatus.idle;
+      notifyListeners();
+    }
+  }
+
+  Future fetchInfo() async {
+    final diolib.Response<Map> response = await dio.get('/users/me',
+        options: diolib.Options(
+          headers: <String, dynamic>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token
+          },
+        ));
+    if (response.statusCode == 200) {
+      me = Me.fromMap(response.data?["data"]["data"] ?? {});
       _status = LoginStatus.loggedIn;
       notifyListeners();
     } else {

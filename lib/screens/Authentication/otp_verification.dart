@@ -1,6 +1,6 @@
+import 'package:doors_tour_app/constants/constants.dart';
+import 'package:doors_tour_app/utils/router/RoutingUtils.dart';
 import 'package:flutter/material.dart';
-
-import '../home_screen/components/bottom_navigator.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({Key? key}) : super(key: key);
@@ -69,7 +69,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "We have sent the verification code to your mobile number ${(mobileNumber / 100000000).toInt()}XXXXXXXX",
+                        "We have sent the verification code to your mobile number ${mobileNumber ~/ 100000000}XXXXXXXX",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 13.0,
@@ -121,17 +121,13 @@ class _OtpVerificationState extends State<OtpVerification> {
                             code = code + _controller[i].text;
                           print(code);
                           print(code);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BottomNavigator(),
-                            ),
-                          );
+                          Navigator.pushReplacementNamed(context, Routes.home);
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 65, 186, 139),
-                              borderRadius: BorderRadius.circular(10.0)),
+                            color: Constants.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                           height: 35.0,
                           width: MediaQuery.of(context).size.width * 0.5,
                           alignment: Alignment.center,
@@ -159,33 +155,36 @@ class _OtpVerificationState extends State<OtpVerification> {
 
   Widget textBoxes(int codeNumber) {
     return Container(
-        margin: EdgeInsets.all(8.0),
-        width: 25.0,
-        height: 25.0,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: [
-            new BoxShadow(
-              color: Color.fromARGB(255, 65, 186, 139),
-              blurRadius: 8.0,
-            ),
-          ],
+      margin: EdgeInsets.all(8.0),
+      width: 25.0,
+      height: 25.0,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          new BoxShadow(
+            color: Constants.kPrimaryColor,
+            blurRadius: 8.0,
+          ),
+        ],
+      ),
+      child: TextField(
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        controller: _controller[codeNumber],
+        maxLength: 1,
+        cursorColor: Theme.of(context).primaryColor,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          counterText: '',
+          hintStyle: TextStyle(color: Colors.black, fontSize: 20.0),
         ),
-        child: TextField(
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number,
-            controller: _controller[codeNumber],
-            maxLength: 1,
-            cursorColor: Theme.of(context).primaryColor,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                counterText: '',
-                hintStyle: TextStyle(color: Colors.black, fontSize: 20.0))));
+      ),
+    );
   }
 }
